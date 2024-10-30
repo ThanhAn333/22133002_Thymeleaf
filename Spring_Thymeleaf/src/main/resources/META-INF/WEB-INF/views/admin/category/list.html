@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Category List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Category List</h1>
+        <a href="/categories/add" class="btn btn-primary">Add Category</a>
+        <form th:action="@{/categories/searchpaginated}" method="get">
+            <div class="form-group">
+                <input type="text" name="name" th:value="${name}" class="form-control" placeholder="Search by name">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form> 	
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>MSSV</th>
+                    <th>Category Name</th>
+                    <th>Images</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="category : ${categoryPage.content}">
+                    <td th:text="${category.id}"></td>
+                    <td th:text="${category.mssv}"></td>
+                    <td th:text="${category.name}"></td>
+                    <td th:text="${category.images}"></td>
+                    <td>
+                        <a th:href="@{/categories/{id}/edit(id=${category.id})}" class="btn btn-warning">Edit</a>
+                        <a th:href="@{/categories/{id}/delete(id=${category.id})}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item" th:class="${categoryPage.hasPrevious()} ? '' : 'disabled'">
+                        <a class="page-link" th:href="@{/categories/searchpaginated(page=${categoryPage.number}, size=${categoryPage.size}, name=${name})}" th:disabled="${!categoryPage.hasPrevious()}">Previous</a>
+                    </li>
+                    <li class="page-item" th:each="pageNum : ${pageNumbers}">
+                        <a class="page-link" th:href="@{/categories/searchpaginated(page=${pageNum}, size=${categoryPage.size}, name=${name})}" th:text="${pageNum}

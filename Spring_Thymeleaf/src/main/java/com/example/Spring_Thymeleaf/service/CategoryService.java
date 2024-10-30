@@ -27,4 +27,6 @@ public interface CategoryService {
 	Page<Category> findByNameContaining(String name, Pageable pageable);
 
 	Optional<Category> findByName(String name);
+	Page<Category> searchByName(String name, Pageable pageable);
+	
 }
